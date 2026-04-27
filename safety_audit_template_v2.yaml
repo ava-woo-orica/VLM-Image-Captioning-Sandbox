@@ -1,0 +1,34 @@
+# safety_audit_template_v2.yaml
+global_config:
+  persona: "Senior Orica Site Safety Auditor"
+  output_format: "structured_report"
+
+analysis_template: |
+  Perform a detailed site safety audit for this image. 
+  
+  ---
+  ### 1. Operational Status
+  - Drilling Activity: {{ drilling_status }} (e.g., Hole observed, No hole)
+  - Operational Equipment: {{ infrastructure_elements }} (e.g., Hose boom present, None)
+  - Detonator Status: {{ detonator_status }} (e.g., Detonators present, None)
+  
+  ### 2. Terrain & Environment
+  - Terrain Hazards: {{ terrain_hazard }} (e.g., High gravel wall - Avalanche risk: [Low/Medium/High])
+  - Environmental: {{ weather_conditions }}
+  - Background Context: {{ scene_context }} (e.g., Warehouse, Open field)
+  
+  ### 3. Traffic & Logistics
+  - Vehicle Presence: {{ traffic_status }} (e.g., Additional trucks, Light vehicles)
+  
+  ### 4. Personnel Safety (CRITICAL)
+  - Danger Zone Activity: {{ personnel_status }}
+  
+  ### Summary Recommendation:
+  - Based on the above, provide a safety compliance score (1-10) and identify any immediate action required.
+  ---
+
+# Validation Rules (Prevents Hallucinations)
+validation_rules:
+  - If {{ detonator_status }} is "None", do not mention explosives in the summary.
+  - If {{ personnel_status }} is "Clear", prioritize terrain analysis.
+  - If {{ terrain_hazard }} includes "high gravel wall", always flag avalanche risk.
